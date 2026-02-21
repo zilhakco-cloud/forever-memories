@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import HomeScreen from './screens/HomeScreen';
 import ChatScreen from './screens/ChatScreen';
 import MemoryVault from './screens/MemoryVault';
@@ -23,9 +24,30 @@ function App() {
   };
 
   return (
-    <div style={{ background: 'var(--bg-deep)', minHeight: '100vh', display: 'flex', flexDirection: 'column', maxWidth: '430px', margin: '0 auto', position: 'relative' }}>
-      <div key={activeScreen} className="screen-enter" style={{ flex: 1 }}>
-        {screens[activeScreen]}
+    <div style={{
+      background: 'var(--bg-deep)',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      maxWidth: '430px',
+      margin: '0 auto',
+      position: 'relative',
+      boxShadow: '0 0 100px rgba(0,0,0,0.5)',
+      overflow: 'hidden'
+    }}>
+      <div style={{ flex: 1, position: 'relative' }}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeScreen}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            style={{ flex: 1, minHeight: '100%' }}
+          >
+            {screens[activeScreen]}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       <BottomNav active={activeScreen} onNavigate={navigate} language={language} />
